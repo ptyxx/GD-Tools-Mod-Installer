@@ -25,6 +25,7 @@ COCOS_EXPLORER = r'https://cdn.discordapp.com/attachments/810593596143173722/817
 START_POS_FIX = r'https://cdn.discordapp.com/attachments/810593596143173722/817854404383211550/StartposFix.dll'
 PROFILE_BUTTON = r'https://cdn.discordapp.com/attachments/810593596143173722/823130011933868032/ProfileButton.dll'
 FAST_TABOUT = r'https://cdn.discordapp.com/attachments/810593596143173722/825513106360893500/fast-tabout.dll'
+GROUP_ID_FILTER = r'https://cdn.discordapp.com/attachments/810593596143173722/826151721692430346/GroupIDFilter.dll'
 
 MODS_LIST = {
     CHECKPOINT_FIX : 'checkpoint fix',
@@ -33,7 +34,8 @@ MODS_LIST = {
     COCOS_EXPLORER : 'cocos explorer',
     START_POS_FIX : 'start pos fix',
     PROFILE_BUTTON : 'profile button',
-    FAST_TABOUT : 'fast tabout'
+    FAST_TABOUT : 'fast tabout',
+    GROUP_ID_FILTER : 'group id filter'
 }
 
 MODIFY_LIBCURL = r'https://cdn.discordapp.com/attachments/819517470091509761/825825509572608080/libcurl.dll'
@@ -83,11 +85,13 @@ def main():
                 x = input('')
         FILELIST = []
         INVERTED_MODS_LIST = {v: k for k, v in MODS_LIST.items()}
+        LIST = [f'{file}.dll' for file in MODS_LIST.values()]
+
         for item in TO_INSTALL:
             download = INVERTED_MODS_LIST[str(item)]
             download_url(str(download), f'{item}.dll')
         for file in os.listdir(os.getcwd()):
-            if file.endswith('dll') and file != 'libcurl.dll' and file != "GDLLLoader.dll":
+            if file.endswith('dll') and file != 'libcurl.dll' and file != "GDLLLoader.dll" and file in LIST:
                 try:
                     shutil.move(fr'{os.getcwd()}\{file}', GD_FOLDER)
                     print(f'moved {file} to {GD_FOLDER}')
@@ -95,17 +99,17 @@ def main():
                 except Exception as e:
                     print(f'[ERROR] {e}')
         if MHV6:
+            ABSOLUTEDLLS = rf'{GD_FOLDER}\absolutedlls'
             print('INSTALLING MODS WITH MHV6 METHOD')
-            os.rename(fr'{GD_FOLDER}\\absolutedlls', "absolutedlls.txt")
+            os.rename(ABSOLUTEDLLS, fr'{ABSOLUTEDLLS}.txt')
             absolutedls = open(fr'{GD_FOLDER}\\absolutedlls.txt', 'w')
             absolutedls.write("hackpro.dll\n")
             for lol in FILELIST:
-                absolutedls.write(lol)
+                absolutedls.write(f'{lol}\n')
             absolutedls.close()
             os.rename(fr'{GD_FOLDER}\\absolutedlls.txt', f"{GD_FOLDER}\\absolutedlls")
             print('SUCCESS!')
-            os.system('pause')
-            exit()
+
         else:
             print('INSTALLING MODS WITH LIBCURL AND GDLLLOADER METHOD (THIS WILL NOT WORK IF YOU HAVE YOUR AV ENABLED)')
             download_url(MODIFY_LIBCURL, 'libcurl.dll')
@@ -133,11 +137,11 @@ def main():
                 print(f'moved {file} to adaf-dll')
 
                 print('SUCCESS')
-                os.system('pause')
-                exit()
+
     else:
         exit()
 if __name__ == '__main__':
+    from time import sleep
     if path.exists(DEAFULT_GD_PATH):
         print(f"gd path found on {DEAFULT_GD_PATH}")
         GD_FOLDER = DEAFULT_GD_PATH
@@ -153,5 +157,12 @@ if __name__ == '__main__':
         print('no Mega Hack v6 detected')
         INSTALL_MESSAGE = 'installing using GDDLLLoader and modified libcurl, this will not work unless you disable your antivirus'
     main()
+    sleep(5)
+
+
+
+
+
+
 
 
