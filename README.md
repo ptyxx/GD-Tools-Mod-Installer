@@ -1,2 +1,2 @@
 # GD-Tools-Mod-Installer
-installer for gd dll mods
+automizes installation of some mods for gd
